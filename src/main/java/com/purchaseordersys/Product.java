@@ -24,6 +24,8 @@ public class Product {
 
     }
 
+    //public Product(){};
+
     /** Methods to return the data values of the product.
     */
     public String getProductCode() {
@@ -52,6 +54,20 @@ public class Product {
 
     public int getRequiredStockLevel() {
         return(productRequiredStockLevel);  
+    }
+
+    /**
+     * Creates a JSON string for the product details.
+     * @return a String with JSON data.
+     */
+
+    public String productJSON(){
+
+        String jsonProduct = new String();
+        jsonProduct = (String.format("{ \"code\": \"%s\", \"name\": \"%s\", \"supplier\": \"%s\", \"cost\": %f, \"rrp\": %f, \"pcsl\": %d, \"prsl\": %d }" , productCode, productName, productSupplier, productCost, productRRP, productCurrentStockLevel, productRequiredStockLevel));
+
+
+        return jsonProduct;
     }
 
     
