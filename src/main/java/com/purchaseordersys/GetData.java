@@ -3,25 +3,29 @@ package com.purchaseordersys;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
 
-public class get_data {
+public class GetData {
 
     public static void main(String[] args) throws Exception{
 
         JSONArray dataObject = get_data_api("products");
 
-        find_low_stock(dataObject, 4);
-
-
-
+        Product productList[];
+        productList = find_low_stock(dataObject, 4);
+        
+        for (int i = 0; i < 100; i++) {
+        Product testProduct = productList[i];
+        testProduct.printProduct();
+        System.out.println(" ");
+         }
+        
 
     }
-    
+
     /**
      * Connects to purchasing API and gathers JSON data.
      * @param url_extension - String that points to function of API
@@ -78,8 +82,13 @@ public class get_data {
      * @param dataObject - JSONArray - Product data to find low stock.
      * @param stockLevel - Integer - Criteria that defines how low the 
      *                               stock needs to be to be low stock.
+    //  * @return productList - Array that contains list of low stock 
+    //  *                       products.
      */
-    public static void find_low_stock(JSONArray dataObject, int stockLevel){
+    public static Product[] find_low_stock(JSONArray dataObject, int stockLevel){
+
+        Product productList[] = new Product[100];
+        int count = 0;
 
         for (int i = 0; i < dataObject.size(); i++) {
              JSONObject productData = (JSONObject) dataObject.get(i);
@@ -87,10 +96,24 @@ public class get_data {
              Long prsl = (Long) productData.get("prsl");
  
              if (pcsl < (prsl / stockLevel)) {
-                 System.out.println(dataObject.get(i));
+
+                String code = (String)productData.get("code");
+                String name = (String)productData.get("name");
+                String supplier = (String)productData.get("supplier");
+                double cost = Double.parseDouble((String)productData.get("cost"));
+                double rrp = Double.parseDouble((String)productData.get("rrp"));
+
+                Product newProduct = 
+                 new Product(code, name, supplier, cost, rrp, pcsl.intValue(), prsl.intValue());
+                 productList[count] = newProduct;
+                 count++;
+                 
              }
+
+            
          }
 
+        return(productList);
         
 
 
