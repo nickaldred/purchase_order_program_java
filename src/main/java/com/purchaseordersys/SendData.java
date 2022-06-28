@@ -1,23 +1,14 @@
 package com.purchaseordersys;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Scanner;
-
 import java.io.*;
 
-import javax.print.DocFlavor.STRING;
 
 public class SendData {
     
     public static void main(String[] args) throws Exception{
 
-        Product newProduct = new Product("7MPRO-422", "BN BLK DSWS", "SELECTRIC", 3.25, 7.50, 10, 40);
+        Product newProduct = new Product("7MPRO-622", "AB BLK DSWS", "SELECTRIC", 3.25, 7.50, 10, 40);
 
         add_product(newProduct, "products");
 
@@ -31,12 +22,12 @@ public class SendData {
      * @throws Exception -  If write error occurs.
      */
 
-    public static boolean add_product(Product newProduct, String url_extension) throws 
-    Exception{
+    public static boolean add_product(Product newProduct, 
+    String url_extension) throws Exception{
 
         try {
 
-            URL url = new URL("http://127.0.0.1:5000/" + url_extension);
+            URL url = new URL("http://127.0.0.2:5000/" + url_extension);
 
             //Open HTTP connection, set to post and setup connection 
             //for writing to API
@@ -48,7 +39,7 @@ public class SendData {
 
             String jsonInputString = newProduct.productJSON();
 
-            //Write the JSON sting to the API
+            //Write the JSON string to the API
             try(OutputStream os = conn.getOutputStream()) {
                 byte[] input = jsonInputString.getBytes("utf-8");
                 os.write(input, 0, input.length);			
