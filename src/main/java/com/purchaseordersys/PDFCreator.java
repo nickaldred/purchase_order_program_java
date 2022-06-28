@@ -1,7 +1,6 @@
 package com.purchaseordersys;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import com.itextpdf.io.image.ImageData; 
 import com.itextpdf.io.image.ImageDataFactory; 
 
@@ -44,7 +43,7 @@ public class PDFCreator {
             //Close document      
             document.close();              
 
-            
+
             }catch(Exception e){
                 System.out.println(e);
             }
