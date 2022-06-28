@@ -38,7 +38,7 @@ public class GetData {
 
         try {
 
-            URL url = new URL("http://127.0.0.1:5000/" + url_extension);
+            URL url = new URL("http://127.0.0.2:5000/" + url_extension);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
@@ -85,26 +85,35 @@ public class GetData {
     //  * @return productList - Array that contains list of low stock 
     //  *                       products.
      */
-    public static Product[] find_low_stock(JSONArray dataObject, int stockLevel){
-
+    public static Product[] find_low_stock(JSONArray dataObject, 
+        int stockLevel){
+        //Initialises an array to store products in. 
         Product productList[] = new Product[100];
         int count = 0;
 
         for (int i = 0; i < dataObject.size(); i++) {
              JSONObject productData = (JSONObject) dataObject.get(i);
+             
+             //Gets current stock level and required stock level.
              Long pcsl = (Long) productData.get("pcsl");
              Long prsl = (Long) productData.get("prsl");
- 
+            
+             //Adds product to array if below stock level.
              if (pcsl < (prsl / stockLevel)) {
-
+                
+                //Pulls product data from JSON.
                 String code = (String)productData.get("code");
                 String name = (String)productData.get("name");
                 String supplier = (String)productData.get("supplier");
-                double cost = Double.parseDouble((String)productData.get("cost"));
-                double rrp = Double.parseDouble((String)productData.get("rrp"));
+                double cost = Double.parseDouble(
+                    (String)productData.get("cost"));
+                double rrp = Double.parseDouble(
+                    (String)productData.get("rrp"));
 
+                //Creates a new product object and adds to array.
                 Product newProduct = 
-                 new Product(code, name, supplier, cost, rrp, pcsl.intValue(), prsl.intValue());
+                 new Product(code, name, supplier, cost, rrp, 
+                    pcsl.intValue(), prsl.intValue());
                  productList[count] = newProduct;
                  count++;
                  
