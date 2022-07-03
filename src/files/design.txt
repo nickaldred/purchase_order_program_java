@@ -1,0 +1,52 @@
+
+A program which retreives and sends data to the database API.
+Using the data which is retreived purchase orders are built into
+a PDF document which are then emailed to the correct supplier 
+automatically. The system will allow for automatic and manual purchase 
+orders using a graphic user interface. The system will also allow the 
+user to update the data within the database again using the API.
+The program will let the user view Financial information such as 
+budget and previous spend.
+
+
+Classes - 
+
+Interface - 
+    Login page
+    Landing page
+    Purchase order creator page
+    Stock level page
+    Update data page
+    Financial page
+
+
+Mainprogram -
+
+
+PDFcreator - 
+    print
+
+
+Product - 
+    Class for product
+
+
+email-handler - 
+    Send email
+
+
+SendData -
+    Add new item
+    update item
+    delete item
+
+
+GetData - 
+    Login
+    Get_data
+    get low stock levels
+
+
+
+
+
