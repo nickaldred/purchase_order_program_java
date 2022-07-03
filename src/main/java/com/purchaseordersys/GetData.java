@@ -13,33 +13,52 @@ public class GetData {
 
     public static void main(String[] args) throws Exception{
 
-        JSONArray dataObject = get_data_api("products");
+
+
+        
+        StringBuilder dataObjectString = 
+                get_data_api("login/nick/PASSWORD", "");
+        JSONObject dataObject = parseJSONObject(dataObjectString);
+        //System.out.println(dataObject.get("token"));
+        String token = new String();
+        token = "?token=" + dataObject.get("token").toString();
+        //token = "sdsd";
+        System.out.println(token);
+
+
+
+        StringBuilder dataArrayString = 
+        get_data_api("products", token);
+        JSONArray dataArray = parseJSONArray(dataArrayString);
 
         ArrayList<Product> productList;
-        productList = find_low_stock(dataObject, 4);
-        
+        productList = find_low_stock(dataArray, 4);
+
         for (int i = 0; i < productList.size(); i++) {
         Product testProduct = productList.get(i);
         testProduct.printProduct();
         System.out.println(" ");
-         }
-        
+    }
 
     }
 
+
+
     /**
      * Connects to purchasing API and gathers JSON data.
-     * @param url_extension - String that points to function of API
-     * @return JSONArray object - JSON data gathered from API
+     * @param url_extension - String that points to function of API.
+     * @return StringBuilder object - String data gathered from 
+     *                                JSON data.
      * @throws Exception
      */
     
-    public static JSONArray get_data_api(String url_extension) throws 
-        Exception{
+    public static StringBuilder get_data_api(String urlExtension, 
+        String token) throws Exception{
 
         try {
 
-            URL url = new URL("http://127.0.0.2:5000/" + url_extension);
+            URL url = new URL(
+                "http://127.0.0.2:5000/" + urlExtension + token);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
@@ -63,13 +82,7 @@ public class GetData {
                 //Close the scanner
                 scanner.close();
 
-                //JSON simple library Setup with Maven is used to 
-                //convert strings to JSON
-                JSONParser parse = new JSONParser();
-                JSONArray dataObject = (JSONArray) 
-                parse.parse(String.valueOf(informationString));
-
-                return dataObject;
+                return informationString;
 
             }
         } catch (Exception e) {
@@ -80,13 +93,63 @@ public class GetData {
 
 
     /**
+     * Parses string builder object and returns a JSON array.
+     * @param informationString - String of JSON array data
+     * @return JSONArray - contains all the JSON objects
+     * @throws Exception
+     */
+
+    public static JSONArray parseJSONArray(StringBuilder informationString) 
+        throws Exception{
+        //JSON simple library convert strings to JSON
+
+        try{
+            JSONParser parse = new JSONParser();
+            JSONArray dataArray = (JSONArray) 
+            parse.parse(String.valueOf(informationString));
+            return dataArray;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+    
+
+    /**
+     * Parses string builder object and returns a JSON object.
+     * @param informationString - String of JSON object data
+     * @return JSONArray - contains a single JSON object.
+     * @throws Exception
+     */
+
+    public static JSONObject parseJSONObject(StringBuilder informationString) 
+        throws Exception{
+
+        try{
+            JSONParser parse = new JSONParser();
+            JSONObject dataObject = (JSONObject) 
+            parse.parse(String.valueOf(informationString));
+            return dataObject;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+
+    /**
      * Using the JSON data supplied finds the items with low stock.
      * @param dataObject - JSONArray - Product data to find low stock.
      * @param stockLevel - Integer - Criteria that defines how low the 
      *                               stock needs to be to be low stock.
-    //  * @return productList - Array that contains list of low stock 
-    //  *                       products.
+     * @return productList - Array that contains list of low stock 
+     *                       products.
      */
+
     public static ArrayList<Product> find_low_stock(JSONArray dataObject, 
         int stockLevel){
         //Initialises an array to store products in. 
