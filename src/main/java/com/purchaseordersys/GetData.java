@@ -6,6 +6,7 @@ import org.json.simple.parser.JSONParser;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 
 public class GetData {
@@ -14,11 +15,11 @@ public class GetData {
 
         JSONArray dataObject = get_data_api("products");
 
-        Product productList[];
+        ArrayList<Product> productList;
         productList = find_low_stock(dataObject, 4);
         
-        for (int i = 0; i < 100; i++) {
-        Product testProduct = productList[i];
+        for (int i = 0; i < productList.size(); i++) {
+        Product testProduct = productList.get(i);
         testProduct.printProduct();
         System.out.println(" ");
          }
@@ -77,6 +78,7 @@ public class GetData {
         }
     }
 
+
     /**
      * Using the JSON data supplied finds the items with low stock.
      * @param dataObject - JSONArray - Product data to find low stock.
@@ -85,11 +87,11 @@ public class GetData {
     //  * @return productList - Array that contains list of low stock 
     //  *                       products.
      */
-    public static Product[] find_low_stock(JSONArray dataObject, 
+    public static ArrayList<Product> find_low_stock(JSONArray dataObject, 
         int stockLevel){
         //Initialises an array to store products in. 
-        Product productList[] = new Product[100];
-        int count = 0;
+        //Product productList[] = new Product[100];
+        ArrayList<Product> productList = new ArrayList<Product>();
 
         for (int i = 0; i < dataObject.size(); i++) {
              JSONObject productData = (JSONObject) dataObject.get(i);
@@ -112,10 +114,10 @@ public class GetData {
 
                 //Creates a new product object and adds to array.
                 Product newProduct = 
-                 new Product(code, name, supplier, cost, rrp, 
-                    pcsl.intValue(), prsl.intValue());
-                 productList[count] = newProduct;
-                 count++;
+                    new Product(code, name, supplier, cost, rrp, 
+                        pcsl.intValue(), prsl.intValue());
+                 
+                    productList.add(newProduct);
                  
              }
 
