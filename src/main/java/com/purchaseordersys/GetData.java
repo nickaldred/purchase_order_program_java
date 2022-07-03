@@ -64,22 +64,23 @@ public class GetData {
             conn.setRequestMethod("GET");
             conn.connect();
 
-            //Check if connection is made
+            //Check if connection is made.
             int responseCode = conn.getResponseCode();
 
-            // 200 OK
+            // 200 OK.
             if (responseCode != 200) {
                 throw new RuntimeException("HttpResponseCode: " + 
                     responseCode);
             } else {
 
+                //Build a string using JSON data gathered.
                 StringBuilder informationString = new StringBuilder();
                 Scanner scanner = new Scanner(url.openStream());
 
                 while (scanner.hasNext()) {
                     informationString.append(scanner.nextLine());
                 }
-                //Close the scanner
+                //Close the scanner.
                 scanner.close();
 
                 return informationString;
@@ -94,14 +95,14 @@ public class GetData {
 
     /**
      * Parses string builder object and returns a JSON array.
-     * @param informationString - String of JSON array data
-     * @return JSONArray - contains all the JSON objects
+     * @param informationString - String of JSON array data.
+     * @return JSONArray - contains all the JSON objects.
      * @throws Exception
      */
 
     public static JSONArray parseJSONArray(StringBuilder informationString) 
         throws Exception{
-        //JSON simple library convert strings to JSON
+        //JSON simple library convert strings to JSON.
 
         try{
             JSONParser parse = new JSONParser();

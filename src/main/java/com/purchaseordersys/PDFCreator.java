@@ -18,7 +18,8 @@ public class PDFCreator {
 
         try{
             // Creating a PdfWriter       
-            String dest = "C:/Users/NickA/Documents/Java/PO's/purchaseorder.pdf";       
+            String dest = 
+            "C:/Users/NickA/Documents/Java/PO's/purchaseorder.pdf";       
             PdfWriter writer = new PdfWriter(dest);        
             
             // Creating a PdfDocument       
@@ -28,8 +29,10 @@ public class PDFCreator {
             Document document = new Document(pdf);              
             
             // Creating an ImageData object       
-            String imFile = "C:/Users/NickA/Documents/Java/Projects - 2/purchase_order_sys/src/files/header.png";       
-            ImageData data = ImageDataFactory.create(imFile);              
+            String imgFile = 
+            "C:/Users/NickA/Documents/Java/Projects -" +
+            " 2/purchase_order_sys/src/files/header.png";       
+            ImageData data = ImageDataFactory.create(imgFile);              
             
             //Add header image to PDF    
             Image image = new Image(data);                          
