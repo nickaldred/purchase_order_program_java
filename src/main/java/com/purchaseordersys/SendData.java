@@ -8,22 +8,40 @@ public class SendData {
     
     public static void main(String[] args) throws Exception{
 
-        Product newProduct = new Product("7MPRO-622", "AB BLK DSWS", "SELECTRIC", 3.25, 7.50, 10, 40);
+        Product newProduct = new Product("7MPRO-627", "AB BLK USWFS", "SELECTRIC", 3.25, 7.50, 3, 10);
 
-        add_product(newProduct, "products");
+        addProduct(newProduct);
 
     }
 
-    /**
+
+
+    public static boolean addProduct (Product newProduct) throws Exception{
+
+        try{
+        SendDataHTTPRequest(
+            newProduct, "products", "POST");
+            
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+
+    }
+
+/**
      * Connects to API and writes adds a new product.
      * @param newProduct - Product object to be added to database.
      * @param url_extension - String of fuction to use in API.
+     * @param httpMethod - HTTP method - e.g "POST"
      * @return Boolean - Shows whether write fuction was successful.
      * @throws Exception -  If write error occurs.
      */
 
-    public static boolean add_product(Product newProduct, 
-    String url_extension) throws Exception{
+    public static boolean SendDataHTTPRequest(Product newProduct, 
+    String url_extension, String httpMethod) throws Exception{
 
         try {
 
@@ -32,7 +50,7 @@ public class SendData {
             //Open HTTP connection, set to post and setup connection 
             //for writing to API
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
+            conn.setRequestMethod(httpMethod);
             conn.setRequestProperty(
                 "Content-Type", "application/json; utf-8");
             conn.setRequestProperty("Accept", "application/json");
