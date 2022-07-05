@@ -14,6 +14,12 @@ public class SendData {
 
     }
 
+    /**
+     * 
+     * @param newProduct - Product object to be added to database.
+     * @returnBoolean - Shows whether fuction was successful.
+     * @throws Exception - If cannot add product.
+     */
 
 
     public static boolean addProduct (Product newProduct) throws Exception{
@@ -30,6 +36,7 @@ public class SendData {
         return true;
 
     }
+
 
 /**
      * Connects to API and writes adds a new product.
