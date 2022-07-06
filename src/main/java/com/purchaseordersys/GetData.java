@@ -15,15 +15,9 @@ public class GetData {
 
 
 
-        
-        StringBuilder dataObjectString = 
-                get_data_api("login/nick/PASSWORD", "");
-        JSONObject dataObject = parseJSONObject(dataObjectString);
-        //System.out.println(dataObject.get("token"));
         String token = new String();
-        token = "?token=" + dataObject.get("token").toString();
-        //token = "sdsd";
-        System.out.println(token);
+        token = buildToken("nick", "PASSWORD");
+
 
 
 
@@ -32,16 +26,41 @@ public class GetData {
         JSONArray dataArray = parseJSONArray(dataArrayString);
 
         ArrayList<Product> productList;
-        productList = find_low_stock(dataArray, 4);
+        productList = find_low_stock(dataArray, 1);
 
         for (int i = 0; i < productList.size(); i++) {
         Product testProduct = productList.get(i);
         testProduct.printProduct();
         System.out.println(" ");
     }
-
     }
 
+
+    /**
+     * Builds a JWT token into a useable String.
+     * @param username - Username for API.
+     * @param password - Password for API.
+     * @return - String of JWT token.
+     * @throws Exception
+     */
+    public static String buildToken(String username, String password) 
+        throws Exception{
+        
+        try {
+            //Fetches JWT token from API.
+            StringBuilder dataObjectString = 
+                get_data_api("login/" + username + "/" + password, "");
+            JSONObject dataObject = parseJSONObject(dataObjectString);
+            String token = new String();
+            //Builds JWT string.
+            token = "?token=" + dataObject.get("token").toString();
+            return(token);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 
     /**
