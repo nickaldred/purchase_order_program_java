@@ -4,30 +4,32 @@ import java.net.URL;
 import java.io.*;
 
 
+
 public class SendData {
     
     public static void main(String[] args) throws Exception{
 
+        String token = new String();
+        token = GetData.buildToken("nick", "PASSWORD");
         Product newProduct = new Product("7MPRO-627", "AB BLK USWFS", "SELECTRIC", 3.25, 7.50, 3, 10);
 
-        addProduct(newProduct);
+        addProduct(newProduct, token);
+        //deleteProduct(newProduct, token);
 
     }
 
     /**
-     * 
+     * Sends the 
      * @param newProduct - Product object to be added to database.
-     * @returnBoolean - Shows whether fuction was successful.
+     * @param token - token string used to access API.
+     * @return Boolean - Shows whether fuction was successful.
      * @throws Exception - If cannot add product.
      */
-
-
-    public static boolean addProduct (Product newProduct) throws Exception{
-
+    public static boolean addProduct (Product newProduct, String token) 
+        throws Exception{
         try{
         SendDataHTTPRequest(
-            newProduct, "products", "POST");
-            
+            newProduct, "products", "POST", token);  
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -35,6 +37,27 @@ public class SendData {
         }
         return true;
 
+    }
+    
+    /**
+     * Deletes a product from the Database using the API.
+     * @param newProduct - Product object to be deleted.
+     * @param token - token string used to access API.
+     * @return - boolean to show if function was successful.
+     * @throws Exception
+     */
+    public static boolean deleteProduct (Product newProduct, String token) 
+        throws Exception{
+        try{
+            SendDataHTTPRequest(
+                newProduct, "products/" + newProduct.getProductCode(), 
+                "DELETE", token);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 
@@ -48,11 +71,12 @@ public class SendData {
      */
 
     public static boolean SendDataHTTPRequest(Product newProduct, 
-    String url_extension, String httpMethod) throws Exception{
+    String url_extension, String httpMethod, String token) throws Exception{
 
         try {
 
-            URL url = new URL("http://127.0.0.2:5000/" + url_extension);
+            URL url = new URL(
+                "http://127.0.0.2:5000/" + url_extension + token);
 
             //Open HTTP connection, set to post and setup connection 
             //for writing to API
