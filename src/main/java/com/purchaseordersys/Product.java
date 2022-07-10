@@ -70,6 +70,21 @@ public class Product {
         return jsonProduct;
     }
 
+
+    /**
+     * Creates a JSON string to update a product's details.
+     * @param dbColumn Column of product to update.
+     * @param newData Data to update column with.
+     * @return a String with JSON data.
+     */
+    public String updateProductJSON(String dbColumn, Object newData){
+        String jsonUpdateProduct = new String();
+        jsonUpdateProduct = (String.format("{ \"column\": \"%s\", \"value\": \"%s\"}", dbColumn, newData));
+
+        return jsonUpdateProduct;
+
+    }
+
     
     /** Prints all the values of the product to the terminal.
      * 
@@ -91,3 +106,8 @@ public class Product {
         
     
 }
+
+
+
+
+
